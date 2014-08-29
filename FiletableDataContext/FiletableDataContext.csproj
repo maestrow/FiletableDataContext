@@ -33,7 +33,15 @@
     <Reference Include="CodeFirstStoredProcs">
       <HintPath>..\packages\CodeFirstStoredProcs.3.0.1\Lib\Net4.5\CodeFirstStoredProcs.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,9 +50,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\IFiletableEntity.cs" />
+    <Compile Include="Migrations\CreateFiletable.cs" />
+    <Compile Include="Migrations\DbMigrationBase.cs" />
+    <Compile Include="Domain\CreateFileResult.cs" />
+    <Compile Include="Domain\FiletableDataContext.cs" />
+    <Compile Include="Migrations\InitDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="Code First Stored Procedures.pdf" />
     <None Include="packages.config" />
     <None Include="Thumbs.db" />
