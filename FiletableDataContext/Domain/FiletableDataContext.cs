@@ -5,10 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CodeFirstStoredProcs;
-using FiletableDataContext.Domain.CreateDir;
-using FiletableDataContext.Domain.CreateFile;
-using FiletableDataContext.Domain.Rename;
-using FiletableDataContext.Domain.Update;
 
 namespace FiletableDataContext.Domain
 {
