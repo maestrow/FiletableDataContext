@@ -1,29 +1,29 @@
-# FiletableDataContext
+п»ї# FiletableDataContext
 
 ## Requirements
 
-- Sql Server Express With Advances Features. Внимание: SQL Server редакции Compact Edition не поддерживает Filetables. 
+- Sql Server Express With Advances Features. Р’РЅРёРјР°РЅРёРµ: SQL Server СЂРµРґР°РєС†РёРё Compact Edition РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ Filetables. 
 
 
 ## Run Demo
 
-- Поправьте строку соединения в App.config
+- РџРѕРїСЂР°РІСЊС‚Рµ СЃС‚СЂРѕРєСѓ СЃРѕРµРґРёРЅРµРЅРёСЏ РІ App.config
 
 
 
 ## Usage
 
 
-### Шаг 1: Создание пустой БД
+### РЁР°Рі 1: РЎРѕР·РґР°РЅРёРµ РїСѓСЃС‚РѕР№ Р‘Р”
 
-Укажите строку соединения с БД:
+РЈРєР°Р¶РёС‚Рµ СЃС‚СЂРѕРєСѓ СЃРѕРµРґРёРЅРµРЅРёСЏ СЃ Р‘Р”:
 ```
   <connectionStrings>
     <add name="MyDb" connectionString="data source=.\SQLEXPRESS;Initial Catalog=Test2;Integrated Security=SSPI;" providerName="System.Data.SqlClient" />
   </connectionStrings>
 ```
 
-Создайте контекст, использующий вашу строку соединения с БД:
+РЎРѕР·РґР°Р№С‚Рµ РєРѕРЅС‚РµРєСЃС‚, РёСЃРїРѕР»СЊР·СѓСЋС‰РёР№ РІР°С€Сѓ СЃС‚СЂРѕРєСѓ СЃРѕРµРґРёРЅРµРЅРёСЏ СЃ Р‘Р”:
 ```
     public class MyDbContext : DbContext //FiletableDbContext<Article>
     {
@@ -33,32 +33,32 @@
     }
 ```
 
-С помощью команд миграции создайте пустую БД:
+РЎ РїРѕРјРѕС‰СЊСЋ РєРѕРјР°РЅРґ РјРёРіСЂР°С†РёРё СЃРѕР·РґР°Р№С‚Рµ РїСѓСЃС‚СѓСЋ Р‘Р”:
 
 - `PM> Enable-Migrations`
 - `PM> Update-Database`
 
 
-### Шаг 2: Инициализация БД
+### РЁР°Рі 2: РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ Р‘Р”
 
-1. Выполнить запрос, подставив вместо {0} имя вашей БД:
+1. Р’С‹РїРѕР»РЅРёС‚СЊ Р·Р°РїСЂРѕСЃ, РїРѕРґСЃС‚Р°РІРёРІ РІРјРµСЃС‚Рѕ {0} РёРјСЏ РІР°С€РµР№ Р‘Р”:
 ```
 ALTER DATABASE {0} SET 
     FILESTREAM ( NON_TRANSACTED_ACCESS = FULL, DIRECTORY_NAME = '{0}' ),
     READ_COMMITTED_SNAPSHOT OFF
 ```
-> На данный момент существует проблема - выполнение этого запроса из класса миграции завершается по таймауту, 
-> но при запуске через SSMS корректно выполняется. 
-> Поэтому вызов в InitDb закомментирован и нужно выполнить его вручную через SSMS.
+> РќР° РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ СЃСѓС‰РµСЃС‚РІСѓРµС‚ РїСЂРѕР±Р»РµРјР° - РІС‹РїРѕР»РЅРµРЅРёРµ СЌС‚РѕРіРѕ Р·Р°РїСЂРѕСЃР° РёР· РєР»Р°СЃСЃР° РјРёРіСЂР°С†РёРё Р·Р°РІРµСЂС€Р°РµС‚СЃСЏ РїРѕ С‚Р°Р№РјР°СѓС‚Сѓ, 
+> РЅРѕ РїСЂРё Р·Р°РїСѓСЃРєРµ С‡РµСЂРµР· SSMS РєРѕСЂСЂРµРєС‚РЅРѕ РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ. 
+> РџРѕСЌС‚РѕРјСѓ РІС‹Р·РѕРІ РІ InitDb Р·Р°РєРѕРјРјРµРЅС‚РёСЂРѕРІР°РЅ Рё РЅСѓР¶РЅРѕ РІС‹РїРѕР»РЅРёС‚СЊ РµРіРѕ РІСЂСѓС‡РЅСѓСЋ С‡РµСЂРµР· SSMS.
 
 
 2. `PM> Add-Migration "InitFilestream" -IgnoreChanges`
 
-После чего в проекте будет создан пустой класс миграции, который необходимо модифицировать следующим образом:
+РџРѕСЃР»Рµ С‡РµРіРѕ РІ РїСЂРѕРµРєС‚Рµ Р±СѓРґРµС‚ СЃРѕР·РґР°РЅ РїСѓСЃС‚РѕР№ РєР»Р°СЃСЃ РјРёРіСЂР°С†РёРё, РєРѕС‚РѕСЂС‹Р№ РЅРµРѕР±С…РѕРґРёРјРѕ РјРѕРґРёС„РёС†РёСЂРѕРІР°С‚СЊ СЃР»РµРґСѓСЋС‰РёРј РѕР±СЂР°Р·РѕРј:
 
-- унаследовать его от InitDb
-- реализовать свойство `ConnectionStringName`, указав имя вашуй БД
-- реализовать свойство `RootPath`, указав путь до папки с базами данных SQL Server
+- СѓРЅР°СЃР»РµРґРѕРІР°С‚СЊ РµРіРѕ РѕС‚ InitDb
+- СЂРµР°Р»РёР·РѕРІР°С‚СЊ СЃРІРѕР№СЃС‚РІРѕ `ConnectionStringName`, СѓРєР°Р·Р°РІ РёРјСЏ РІР°С€СѓР№ Р‘Р”
+- СЂРµР°Р»РёР·РѕРІР°С‚СЊ СЃРІРѕР№СЃС‚РІРѕ `RootPath`, СѓРєР°Р·Р°РІ РїСѓС‚СЊ РґРѕ РїР°РїРєРё СЃ Р±Р°Р·Р°РјРё РґР°РЅРЅС‹С… SQL Server
 
 
 ```
@@ -75,14 +75,14 @@ public partial class InitFilestream : InitDb
 
 
 
-### Шаг 3: Создание сущности Filetable
+### РЁР°Рі 3: РЎРѕР·РґР°РЅРёРµ СЃСѓС‰РЅРѕСЃС‚Рё Filetable
 
-1. Создайте класс-наследник от FiletableEntityBase
+1. РЎРѕР·РґР°Р№С‚Рµ РєР»Р°СЃСЃ-РЅР°СЃР»РµРґРЅРёРє РѕС‚ FiletableEntityBase
 ```
 public class Article : FiletableEntityBase {}
 ```
 
-2. Создайте отдельный контекст для этой сущности
+2. РЎРѕР·РґР°Р№С‚Рµ РѕС‚РґРµР»СЊРЅС‹Р№ РєРѕРЅС‚РµРєСЃС‚ РґР»СЏ СЌС‚РѕР№ СЃСѓС‰РЅРѕСЃС‚Рё
 ```
     public class ArticleContext : FiletableDbContext<Article>
     {
@@ -93,10 +93,10 @@ public class Article : FiletableEntityBase {}
 ```
 
 3. `PM> Add-Migration "Article" -IgnoreChanges`
-После чего в проекте будет создан пустой класс миграции, который необходимо модифицировать следующим образом:
+РџРѕСЃР»Рµ С‡РµРіРѕ РІ РїСЂРѕРµРєС‚Рµ Р±СѓРґРµС‚ СЃРѕР·РґР°РЅ РїСѓСЃС‚РѕР№ РєР»Р°СЃСЃ РјРёРіСЂР°С†РёРё, РєРѕС‚РѕСЂС‹Р№ РЅРµРѕР±С…РѕРґРёРјРѕ РјРѕРґРёС„РёС†РёСЂРѕРІР°С‚СЊ СЃР»РµРґСѓСЋС‰РёРј РѕР±СЂР°Р·РѕРј:
 
-- унаследовать от CreateFiletable
-- реализовать свойства `ConnectionStringName` и `TableName`
+- СѓРЅР°СЃР»РµРґРѕРІР°С‚СЊ РѕС‚ CreateFiletable
+- СЂРµР°Р»РёР·РѕРІР°С‚СЊ СЃРІРѕР№СЃС‚РІР° `ConnectionStringName` Рё `TableName`
 
 4. `PM> Updata-Database`
 
@@ -116,5 +116,5 @@ Install:
 
 ### Code First Stored Procedures
 
-В проекте использована библиотека [CodeFirstStoredProcs](https://www.nuget.org/packages/CodeFirstStoredProcs/) (см. [статью](http://www.codeproject.com/Articles/179481/Code-First-Stored-Procedures)).
-Для данной библиотеки понадобился небольшой [патч](http://stackoverflow.com/questions/358835/getproperties-to-return-all-properties-for-an-interface-inheritance-hierarchy), поэтому я включил ее код в проект и добавил функцию `public static PropertyInfo[] GetPublicProperties(this Type type)`.
+Р’ РїСЂРѕРµРєС‚Рµ РёСЃРїРѕР»СЊР·РѕРІР°РЅР° Р±РёР±Р»РёРѕС‚РµРєР° [CodeFirstStoredProcs](https://www.nuget.org/packages/CodeFirstStoredProcs/) (СЃРј. [СЃС‚Р°С‚СЊСЋ](http://www.codeproject.com/Articles/179481/Code-First-Stored-Procedures)).
+Р”Р»СЏ РґР°РЅРЅРѕР№ Р±РёР±Р»РёРѕС‚РµРєРё РїРѕРЅР°РґРѕР±РёР»СЃСЏ РЅРµР±РѕР»СЊС€РѕР№ [РїР°С‚С‡](http://stackoverflow.com/questions/358835/getproperties-to-return-all-properties-for-an-interface-inheritance-hierarchy), РїРѕСЌС‚РѕРјСѓ СЏ РІРєР»СЋС‡РёР» РµРµ РєРѕРґ РІ РїСЂРѕРµРєС‚ Рё РґРѕР±Р°РІРёР» С„СѓРЅРєС†РёСЋ `public static PropertyInfo[] GetPublicProperties(this Type type)`.
