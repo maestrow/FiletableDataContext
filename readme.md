@@ -101,6 +101,17 @@ public class Article : FiletableEntityBase {}
 4. `PM> Updata-Database`
 
 
+## Make Nuget Package and Install Package from Local Source
+
+Make package:
+
+	c:\> cd FiletableDataContext
+	c:\> nuget pack -OutputDirectory d:/path/to/local/repo
+
+Install:
+
+	PM> Install-Package FiletableDataContext -Source d:/path/to/local/repo
+
 ## Notes
 
 ### Code First Stored Procedures

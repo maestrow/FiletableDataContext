@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6C671D1A-33E1-43C8-8E8E-FBCE42E96652}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		FiletableDataContext\FiletableDataContext.nuspec = FiletableDataContext\FiletableDataContext.nuspec
 		readme.md = readme.md
 	EndProjectSection
 EndProject
