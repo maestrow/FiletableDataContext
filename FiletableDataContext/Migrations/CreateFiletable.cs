@@ -11,6 +11,7 @@
             CreateDir_Up();
             CreateFile_Up();
             Rename_Up();
+            Update_Up();
             Delete_Up();
         }
 
@@ -21,6 +22,7 @@
             CreateDir_Down();
             CreateFile_Down();
             Rename_Down();
+            Update_Down();
             Delete_Down();
         }
 

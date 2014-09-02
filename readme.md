@@ -43,8 +43,8 @@
 
 1. Выполнить запрос, подставив вместо {0} имя вашей БД:
 ```
-ALTER DATABASE WikiEngine SET FILESTREAM ( NON_TRANSACTED_ACCESS = FULL, DIRECTORY_NAME = 'WikiEngine' )
 ALTER DATABASE WikiEngine SET READ_COMMITTED_SNAPSHOT OFF
+ALTER DATABASE WikiEngine SET FILESTREAM ( NON_TRANSACTED_ACCESS = FULL, DIRECTORY_NAME = 'WikiEngine' )
 ```
 > На данный момент существует проблема - выполнение этого запроса из класса миграции завершается по таймауту, 
 > но при запуске через SSMS корректно выполняется. 
