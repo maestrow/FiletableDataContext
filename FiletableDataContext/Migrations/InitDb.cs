@@ -1,19 +1,49 @@
-﻿namespace FiletableDataContext.Migrations
+﻿using System.IO;
+
+namespace FiletableDataContext.Migrations
 {
     public abstract class InitDb : DbMigrationBase
     {
+        public abstract string RootPath { get; }
+
         public override void Up()
         {
-            FileStreamProperties_Up();
+            CreateDbDir_Up();
+            FilestreamFilegroup_Up();
+            //FileStreamProperties_Up();
             GetNewID_Up();
             GetNewPathLocator_Up();
         }
 
         public override void Down()
         {
-            FileStreamProperties_Down();
+            FilestreamFilegroup_Down();
             GetNewID_Down();
             GetNewPathLocator_Down();
+        }
+
+        private void CreateDbDir_Up()
+        {
+            var dirName = string.Format(@"{0}\{1}", RootPath, DbName);
+            if (!Directory.Exists(dirName))
+                Directory.CreateDirectory(dirName);
+        }
+
+        public void FilestreamFilegroup_Up()
+        {
+            Sql(string.Format(@"ALTER DATABASE {0} ADD FILEGROUP {0}Group CONTAINS FILESTREAM", DbName), true);
+            Sql(string.Format(@"ALTER DATABASE {0}
+                ADD FILE (
+	                NAME = '{0}Filestream',
+	                FILENAME = '{1}\{0}\Filestream'
+                ) TO FILEGROUP {0}Group
+                ", DbName, RootPath), true);
+        }
+
+        public void FilestreamFilegroup_Down()
+        {
+            Sql(string.Format(@"ALTER DATABASE {0} REMOVE FILE {0}Filestream", DbName), true);
+            Sql(string.Format(@"ALTER DATABASE {0} REMOVE FILEGROUP {0}Group", DbName), true);
         }
 
         private void FileStreamProperties_Up()
@@ -23,10 +53,6 @@
                 FILESTREAM ( NON_TRANSACTED_ACCESS = FULL, DIRECTORY_NAME = '{0}' ),
                 READ_COMMITTED_SNAPSHOT OFF
             ", DbName), true);
-        }
-
-        private void FileStreamProperties_Down()
-        {
         }
 
         private void GetNewID_Up()

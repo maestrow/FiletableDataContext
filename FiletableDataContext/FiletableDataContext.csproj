@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CodeFirstStoredProcs">
-      <HintPath>..\packages\CodeFirstStoredProcs.3.0.1\Lib\Net4.5\CodeFirstStoredProcs.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -50,17 +47,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\IFiletableEntity.cs" />
+    <Compile Include="Domain\FiletableEntityBase.cs" />
+    <Compile Include="Domain\Params\ICreateDirParams.cs" />
+    <Compile Include="Domain\Params\ICreateFileParams.cs" />
+    <Compile Include="Domain\Params\IRenameParams.cs" />
+    <Compile Include="Domain\Params\IStreamId.cs" />
+    <Compile Include="Domain\Params\IUpdateParams.cs" />
     <Compile Include="Migrations\CreateFiletable.cs" />
     <Compile Include="Migrations\DbMigrationBase.cs" />
-    <Compile Include="Domain\CreateFileResult.cs" />
-    <Compile Include="Domain\FiletableDataContext.cs" />
+    <Compile Include="Domain\CreateResult.cs" />
+    <Compile Include="Domain\FiletableDbContext.cs" />
     <Compile Include="Migrations\InitDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Vendor\CodeFirstStoredProcs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Code First Stored Procedures.pdf" />
+    <None Include="Vendor\Code First Stored Procedures.pdf" />
     <None Include="packages.config" />
     <None Include="Thumbs.db" />
   </ItemGroup>

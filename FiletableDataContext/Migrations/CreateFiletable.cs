@@ -28,13 +28,13 @@
         private void Filetable_Up()
         {
             Sql(string.Format(
-            @"CREATE TABLE {0} AS FileTable WITH (FILETABLE_STREAMID_UNIQUE_CONSTRAINT_NAME = ui_file_stream)", TableName));
+            @"CREATE TABLE [{0}] AS FileTable WITH (FILETABLE_STREAMID_UNIQUE_CONSTRAINT_NAME = {0}_streamid_constraint)", TableName));
         }
 
         private void Filetable_Down()
         {
             Sql(string.Format(
-            @"DROP TABLE {0}", TableName));
+            @"DROP TABLE [{0}]", TableName));
         }
 
         private void View_Up()
@@ -57,9 +57,10 @@
 	            ,is_archive
 	            ,is_system
 	            ,is_temporary
-	            ,path_locator.ToString() as [path]
+                ,parent_path_locator.ToString() as [parentpath]
+                ,path_locator.ToString() as [path]
             FROM 
-	            dbo.data
+	            [{0}]
             ", TableName));
         }
 
@@ -74,7 +75,8 @@
             CREATE PROCEDURE [{0}_CreateDir] (@name AS NVARCHAR(255), @parentpath nvarchar(4000))
             AS
             BEGIN
-	            INSERT INTO dbo.data (name, path_locator, is_directory, is_archive) 
+	            INSERT INTO {0} (name, path_locator, is_directory, is_archive) 
+                OUTPUT INSERTED.stream_id, INSERTED.path_locator.ToString() as [path]
 	            VALUES (@name, dbo.GetNewPathLocator(@parentpath), 1, 0)
             END
             ", TableName));
@@ -82,7 +84,7 @@
 
         private void CreateDir_Down()
         {
-            Sql(string.Format(@"DROP PROCEDURE {0}_CreateDir", TableName));
+            Sql(string.Format(@"DROP PROCEDURE [{0}_CreateDir]", TableName));
         }
 
         private void CreateFile_Up()
@@ -100,7 +102,7 @@
             )
             AS
             BEGIN
-                INSERT INTO dbo.Data(
+                INSERT INTO [{0}](
                    [name]
 	              ,[file_stream]
                   ,[path_locator]
@@ -118,7 +120,7 @@
 
         private void CreateFile_Down()
         {
-            Sql(string.Format(@"DROP PROCEDURE {0}_CreateFile", TableName));
+            Sql(string.Format(@"DROP PROCEDURE [{0}_CreateFile]", TableName));
         }
 
         private void Rename_Up()
@@ -126,10 +128,10 @@
             Sql(string.Format(@"
             CREATE PROCEDURE [{0}_Rename] (
 	             @stream_id uniqueidentifier
-	            ,@new_name nvarchar(255)
+	            ,@name nvarchar(255)
             ) AS
             BEGIN
-	            UPDATE dbo.data SET name = @new_name WHERE stream_id = @stream_id
+	            UPDATE [{0}] SET name = @name WHERE stream_id = @stream_id
             END
             ", TableName));
         }
@@ -147,7 +149,7 @@
 	            ,@file_stream varbinary(max)
             ) AS
             BEGIN
-	            UPDATE dbo.data SET file_stream = @file_stream WHERE stream_id = @stream_id
+	            UPDATE [{0}] SET file_stream = @file_stream WHERE stream_id = @stream_id
             END
             ", TableName));
         }
@@ -164,7 +166,7 @@
 	             @stream_id uniqueidentifier
             ) AS
             BEGIN
-	            DELETE FROM dbo.data WHERE stream_id = @stream_id
+	            DELETE FROM [{0}] WHERE stream_id = @stream_id
             END
             ", TableName));
         }
