@@ -66,7 +66,7 @@
 
         private void View_Down()
         {
-            Sql(string.Format(@"DROP VIEW {0}_View", TableName));
+            Sql(string.Format(@"DROP VIEW [{0}_View]", TableName));
         }
 
         private void CreateDir_Up()
@@ -75,7 +75,7 @@
             CREATE PROCEDURE [{0}_CreateDir] (@name AS NVARCHAR(255), @parentpath nvarchar(4000))
             AS
             BEGIN
-	            INSERT INTO {0} (name, path_locator, is_directory, is_archive) 
+	            INSERT INTO [{0}] (name, path_locator, is_directory, is_archive) 
                 OUTPUT INSERTED.stream_id, INSERTED.path_locator.ToString() as [path]
 	            VALUES (@name, dbo.GetNewPathLocator(@parentpath), 1, 0)
             END

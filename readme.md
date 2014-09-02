@@ -43,36 +43,22 @@
 
 1. Выполнить запрос, подставив вместо {0} имя вашей БД:
 ```
-ALTER DATABASE {0} SET 
-    FILESTREAM ( NON_TRANSACTED_ACCESS = FULL, DIRECTORY_NAME = '{0}' ),
-    READ_COMMITTED_SNAPSHOT OFF
+ALTER DATABASE WikiEngine SET FILESTREAM ( NON_TRANSACTED_ACCESS = FULL, DIRECTORY_NAME = 'WikiEngine' )
+ALTER DATABASE WikiEngine SET READ_COMMITTED_SNAPSHOT OFF
 ```
 > На данный момент существует проблема - выполнение этого запроса из класса миграции завершается по таймауту, 
 > но при запуске через SSMS корректно выполняется. 
 > Поэтому вызов в InitDb закомментирован и нужно выполнить его вручную через SSMS.
 
-
 2. `PM> Add-Migration "InitFilestream" -IgnoreChanges`
 
 После чего в проекте будет создан пустой класс миграции, который необходимо модифицировать следующим образом:
 
-- унаследовать его от InitDb
+- унаследовать его от `InitDb`
 - реализовать свойство `ConnectionStringName`, указав имя вашуй БД
 - реализовать свойство `RootPath`, указав путь до папки с базами данных SQL Server
 
-
-```
-public partial class InitFilestream : InitDb
-{
-    protected override string ConnectionStringName
-    {
-        get { return "MyDb"; }
-    }
-}
-```
-
 3. `PM> Update-Database`
-
 
 
 ### Шаг 3: Создание сущности Filetable
@@ -111,6 +97,7 @@ Make package:
 Install:
 
 	PM> Install-Package FiletableDataContext -Source d:/path/to/local/repo
+
 
 ## Notes
 
