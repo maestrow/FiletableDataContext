@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Sql Server Express With Advances Features. Внимание: SQL Server редакции Compact Edition не поддерживает Filetables. 
+- Sql Server Express With Advances Features. Внимание: SQL Server Express LocalDb не поддерживает Filetables. 
 
 
 ## Run Demo
